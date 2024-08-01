@@ -1,0 +1,37 @@
+Category Management
+Endpoints:
+   GET /categories - Fetch all categories.
+   POST /categories - Create a new category.
+   PUT /categories/{id} - Update a category.
+   DELETE /categories/{id} - Delete a category.
+
+Supplier Management
+Endpoints:
+   GET /suppliers - Fetch all suppliers.
+   POST /suppliers - Create a new supplier.
+   PUT /suppliers/{id} - Update a supplier.
+   DELETE /suppliers/{id} - Delete a supplier.
+
+Product Management
+Endpoints:
+   GET /products - Fetch all products.
+   GET /products/{id} - Fetch a product by ID.
+   POST /products - Create a new product.
+   PUT /products/{id} - Update a product.
+   DELETE /products/{id} - Delete a product.
+
+Product Details Management
+Endpoints:
+   GET /product-details - Fetch all product details.
+   GET /product-details/{id} - Fetch product details by ID.
+   POST /product-details - Create product details.
+   PUT /product-details/{id} - Update product details.
+   DELETE /product-details/{id} - Delete product details.
+   
+Inventory Management
+Endpoints:
+   GET /inventory - Fetch inventory levels.
+   GET /inventory/{productId} - Fetch inventory for a specific product.
+   POST /inventory - Add or update inventory for a product.
+   PUT /inventory/{id} - Update inventory entry.
+   DELETE /inventory/{id} - Delete inventory entry.

@@ -1,17 +1,19 @@
+using InventoryService.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryService.API.Controllers 
 { 
-    public class ProductController : ControllerBase
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ProductsController(IProductService productService) : ControllerBase
     { 
-        public void GetProduct() 
-        { 
-            // Get product    
-            
-        } 
-        public void UpdateProduct() 
-        { 
-            // Update product 
+        private readonly IProductService _productService = productService;
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts(){
+            var products = await _productService.GetAllProductsAsync();
+            return Ok(products);
         }
+        
     }
 }
