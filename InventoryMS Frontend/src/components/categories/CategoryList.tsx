@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { getCategories, deleteCategory } from '../../services/api';
 import CategoryForm from './CategoryForm';
 import { ICategory } from '../../interfaces/categories/ICategory';
-import CategoryItem from './CategoryItem';
 
 const CategoryList = () => {
     const [categories, setCategories] = useState<ICategory[]>([]);
@@ -32,12 +31,16 @@ const CategoryList = () => {
     };
 
     return (
-        <div>
-            <h1>Categories</h1>
+        <div className="max-w-3xl mx-auto mt-10">
+            <h1 className="text-2xl font-bold mb-4">Categories</h1>
             <CategoryForm categoryId={selectedCategoryId ?? undefined} onSuccess={handleFormSuccess} />
-            <ul>
+            <ul className="mt-4">
                 {categories.map(category => (
-                    <CategoryItem key={category.categoryID} category={category} onEdit={handleEdit} onDelete={handleDelete} />
+                    <li key={category.categoryID}>
+                        {category.categoryName}
+                        <button onClick={() => handleEdit(category.categoryID)} className="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600 mr-2">Edit</button>
+                        <button onClick={() => handleDelete(category.categoryID)} className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">Delete</button>
+                    </li>
                 ))}
             </ul>
         </div>

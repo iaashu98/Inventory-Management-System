@@ -31,15 +31,15 @@ const ProductList = () => {
     };
 
     return (
-        <div>
-            <h1>Products</h1>
+        <div className="max-w-3xl mx-auto mt-10">
+            <h1 className="text-2xl font-bold mb-4">Products</h1>
             <ProductForm productId={selectedProductId ?? undefined} onSuccess={handleFormSuccess} />
-            <ul>
+            <ul className="mt-4">
                 {products.map(product => (
                     <li key={product.productID}>
                         {product.productName}
-                        <button onClick={() => handleEdit(product.productID)}>Edit</button>
-                        <button onClick={() => handleDelete(product.productID)}>Delete</button>
+                        <button onClick={() => handleEdit(product.productID)} className="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600 mr-2">Edit</button>
+                        <button onClick={() => handleDelete(product.productID)} className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">Delete</button>
                     </li>
                 ))}
             </ul>

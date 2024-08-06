@@ -55,47 +55,47 @@ const ProductForm = ({ productId, onSuccess }: IProductFormProps) => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label>Product Name</label>
-                <input type="text" name="productName" placeholder='Enter Product Name' value={product.productName} onChange={handleChange} />
+        <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="flex flex-col">
+                <label className="mb-1 font-semibold">Product Name</label>
+                <input type="text" name="productName" value={product.productName} onChange={handleChange} className="border p-2 rounded" />
             </div>
-            <div>
-                <label>Category ID</label>
-                <input type="number" name="categoryID" value={product.categoryID} onChange={handleChange} />
+            <div className="flex flex-col">
+                <label className="mb-1 font-semibold">Category ID</label>
+                <input type="number" name="categoryID" value={product.categoryID} onChange={handleChange} className="border p-2 rounded" />
             </div>
-            <div>
-                <label>Supplier ID</label>
-                <input type="number" name="supplierID" value={product.supplierID} onChange={handleChange} />
+            <div className="flex flex-col">
+                <label className="mb-1 font-semibold">Supplier ID</label>
+                <input type="number" name="supplierID" value={product.supplierID} onChange={handleChange} className="border p-2 rounded" />
             </div>
-            <div>
-                <label>Quantity Per Unit</label>
-                <input type="text" name="quantityPerUnit" value={product.quantityPerUnit} onChange={handleChange} />
+            <div className="flex flex-col">
+                <label className="mb-1 font-semibold">Quantity Per Unit</label>
+                <input type="text" name="quantityPerUnit" value={product.quantityPerUnit} onChange={handleChange} className="border p-2 rounded" />
             </div>
-            <div>
-                <label>Unit Price</label>
-                <input type="number" name="unitPrice" value={product.unitPrice} onChange={handleChange} />
+            <div className="flex flex-col">
+                <label className="mb-1 font-semibold">Unit Price</label>
+                <input type="number" name="unitPrice" value={product.unitPrice} onChange={handleChange} className="border p-2 rounded" />
             </div>
-            <div>
-                <label>Units In Stock</label>
-                <input type="number" name="unitsInStock" value={product.unitsInStock} onChange={handleChange} />
+            <div className="flex flex-col">
+                <label className="mb-1 font-semibold">Units In Stock</label>
+                <input type="number" name="unitsInStock" value={product.unitsInStock} onChange={handleChange} className="border p-2 rounded" />
             </div>
-            <div>
-                <label>Units On Order</label>
-                <input type="number" name="unitsOnOrder" value={product.unitsOnOrder} onChange={handleChange} />
+            <div className="flex flex-col">
+                <label className="mb-1 font-semibold">Units On Order</label>
+                <input type="number" name="unitsOnOrder" value={product.unitsOnOrder} onChange={handleChange} className="border p-2 rounded" />
             </div>
-            <div>
-                <label>Reorder Level</label>
-                <input type="number" name="reorderLevel" value={product.reorderLevel} onChange={handleChange} />
+            <div className="flex flex-col">
+                <label className="mb-1 font-semibold">Reorder Level</label>
+                <input type="number" name="reorderLevel" value={product.reorderLevel} onChange={handleChange} className="border p-2 rounded" />
             </div>
-            <div>
-                <label>Discontinued</label>
-                <select name="discontinued" value={product.discontinued.toString()} onChange={handleChange}>
+            <div className="flex flex-col">
+                <label className="mb-1 font-semibold">Discontinued</label>
+                <select name="discontinued" value={product.discontinued.toString()} onChange={handleChange} className="border p-2 rounded">
                     <option value="false">No</option>
                     <option value="true">Yes</option>
                 </select>
             </div>
-            <button type='submit'> {productId ? 'Update' : 'Create'}</button>
+            <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">{productId ? 'Update' : 'Create'}</button>
         </form>
     )
 }

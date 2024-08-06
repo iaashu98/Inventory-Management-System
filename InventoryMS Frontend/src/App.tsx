@@ -8,21 +8,23 @@ import SuppliersPage from './Pages/SuppliersPage'
 const App = () => {
   return (
     <Router>
-      <nav>
-        <ul>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/products">Products</Link></li>
-          <li><Link to="/categories">Categories</Link></li>
-          <li><Link to="/suppliers">Suppliers</Link></li>
-        </ul>
-      </nav>
-      <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/products" element={<ProductsPage />} />
-                <Route path="/categories" element={<CategoriesPage />} />
-                <Route path="/suppliers" element={<SuppliersPage />} />
-            </Routes>
-    </Router>
+            <nav className="bg-gray-800 p-4">
+                <ul className="flex space-x-4">
+                    <li><Link to="/" className="text-white hover:underline">Home</Link></li>
+                    <li><Link to="/products" className="text-white hover:underline">Products</Link></li>
+                    <li><Link to="/categories" className="text-white hover:underline">Categories</Link></li>
+                    <li><Link to="/suppliers" className="text-white hover:underline">Suppliers</Link></li>
+                </ul>
+            </nav>
+            <div className="p-4">
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/products" element={<ProductsPage />} />
+                    <Route path="/categories" element={<CategoriesPage />} />
+                    <Route path="/suppliers" element={<SuppliersPage />} />
+                </Routes>
+            </div>
+        </Router>
   )
 }
 

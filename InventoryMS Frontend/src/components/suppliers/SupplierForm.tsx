@@ -47,41 +47,42 @@ const SupplierForm = ({ supplierId, onSuccess }: ISupplierFormProps) => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label>Supplier Name</label>
-                <input type="text" name="supplierName" value={supplier.supplierName} onChange={handleChange} />
+        <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="flex flex-col">
+                <label className="mb-1 font-semibold">Supplier Name</label>
+                <input type="text" name="supplierName" value={supplier.supplierName} onChange={handleChange} className="border p-2 rounded" />
             </div>
-            <div>
-                <label>Contact Name</label>
-                <input type="text" name="contactName" value={supplier.contactName} onChange={handleChange} />
+            <div className="flex flex-col">
+                <label className="mb-1 font-semibold">Contact Name</label>
+                <input type="text" name="contactName" value={supplier.contactName} onChange={handleChange} className="border p-2 rounded" />
             </div>
-            <div>
-                <label>Address</label>
-                <input type="text" name="address" value={supplier.address} onChange={handleChange} />
+            <div className="flex flex-col">
+                <label className="mb-1 font-semibold">Address</label>
+                <input type="text" name="address" value={supplier.address} onChange={handleChange} className="border p-2 rounded" />
             </div>
-            <div>
-                <label>City</label>
-                <input type="text" name="city" value={supplier.city} onChange={handleChange} />
+            <div className="flex flex-col">
+                <label className="mb-1 font-semibold">City</label>
+                <input type="text" name="city" value={supplier.city} onChange={handleChange} className="border p-2 rounded" />
             </div>
-            <div>
-                <label>Postal Code</label>
-                <input type="text" name="postalCode" value={supplier.postalCode} onChange={handleChange} />
+            <div className="flex flex-col">
+                <label className="mb-1 font-semibold">Postal Code</label>
+                <input type="text" name="postalCode" value={supplier.postalCode} onChange={handleChange} className="border p-2 rounded" />
             </div>
-            <div>
-                <label>Country</label>
-                <input type="text" name="country" value={supplier.country} onChange={handleChange} />
+            <div className="flex flex-col">
+                <label className="mb-1 font-semibold">Country</label>
+                <input type="text" name="country" value={supplier.country} onChange={handleChange} className="border p-2 rounded" />
             </div>
-            <div>
-                <label>Phone</label>
-                <input type="text" name="phone" value={supplier.phone} onChange={handleChange} />
+            <div className="flex flex-col">
+                <label className="mb-1 font-semibold">Phone</label>
+                <input type="text" name="phone" value={supplier.phone} onChange={handleChange} className="border p-2 rounded" />
             </div>
-            <div>
-                <label>Email</label>
-                <input type="email" name="email" value={supplier.email} onChange={handleChange} />
+            <div className="flex flex-col">
+                <label className="mb-1 font-semibold">Email</label>
+                <input type="email" name="email" value={supplier.email} onChange={handleChange} className="border p-2 rounded" />
             </div>
-            <button type="submit">{supplierId ? 'Update' : 'Create'}</button>
+            <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">{supplierId ? 'Update' : 'Create'}</button>
         </form>
+
     );
 };
 

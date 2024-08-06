@@ -41,17 +41,18 @@ const CategoryForm = ({ categoryId, onSuccess }: ICategoryFormProps) => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label>Category Name</label>
-                <input type="text" name="categoryName" value={category.categoryName} onChange={handleChange} />
-            </div>
-            <div>
-                <label>Description</label>
-                <textarea name="description" value={category.description} onChange={handleChange} />
-            </div>
-            <button type="submit">{categoryId ? 'Update' : 'Create'}</button>
-        </form>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="flex flex-col">
+            <label className="mb-1 font-semibold">Category Name</label>
+            <input type="text" name="categoryName" value={category.categoryName} onChange={handleChange} className="border p-2 rounded" />
+        </div>
+        <div className="flex flex-col">
+            <label className="mb-1 font-semibold">Description</label>
+            <textarea name="description" value={category.description} onChange={handleChange} className="border p-2 rounded" />
+        </div>
+        <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">{categoryId ? 'Update' : 'Create'}</button>
+    </form>
     );
 };
 

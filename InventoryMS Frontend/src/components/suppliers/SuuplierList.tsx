@@ -32,12 +32,16 @@ const SupplierList = () => {
     };
 
     return (
-        <div>
-            <h1>Suppliers</h1>
+<div className="max-w-3xl mx-auto mt-10">
+            <h1 className="text-2xl font-bold mb-4">Suppliers</h1>
             <SupplierForm supplierId={selectedSupplierId ?? undefined} onSuccess={handleFormSuccess} />
-            <ul>
+            <ul className="mt-4">
                 {suppliers.map(supplier => (
-                    <SupplierItem key={supplier.supplierID} supplier={supplier} onEdit={handleEdit} onDelete={handleDelete} />
+                    <li key={supplier.supplierID}>
+                        {supplier.supplierName}
+                        <button onClick={() => handleEdit(supplier.supplierID)} className="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600 mr-2">Edit</button>
+                        <button onClick={() => handleDelete(supplier.supplierID)} className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">Delete</button>
+                    </li>
                 ))}
             </ul>
         </div>

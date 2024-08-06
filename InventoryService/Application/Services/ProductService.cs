@@ -23,9 +23,9 @@ public class ProductService: IProductService{
         throw new NotImplementedException();
     }
 
-    public Task<Product> GetProductByIdAsync(int productId)
+    public Product GetProductById(int productId)
     {
-        throw new NotImplementedException();
+        return _context.Products.FirstOrDefault(x => x.ProductID == productId);
     }
 
     public Task<Product> UpdateProductAsync(int productId, Product product)
