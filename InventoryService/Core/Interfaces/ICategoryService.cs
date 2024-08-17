@@ -5,6 +5,7 @@ namespace InventoryService.Core.Interfaces
     Task<Category> GetCategoryByIdAsync(int categoryId);
     Task<Category> CreateCategoryAsync(Category category);
     Task<Category> UpdateCategoryAsync(int categoryId, Category category);
-    Task<bool> DeleteCategoryAsync(int categoryId);
+    Task<int> DeleteCategoryAsync(int categoryId);
+    Task<IEnumerable<Category>> SearchCategoriesAsync(string searchText);
     }
 }

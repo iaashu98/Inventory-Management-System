@@ -51,8 +51,7 @@ namespace InventoryService.API.Controllers
         {
             if(product == null)
                 return BadRequest("This is a Bad Request.");
-            Product savedProduct = await _productService.CreateProductAsync(product);
-            return savedProduct;
+            return await _productService.CreateProductAsync(product);
         }
 
         [HttpDelete]
@@ -61,8 +60,7 @@ namespace InventoryService.API.Controllers
             if(productId < 0)
                 return BadRequest("Invalid product ID");
 
-            bool result = await _productService.DeleteProductAsync(productId);
-            return result;
+            return await _productService.DeleteProductAsync(productId);
         }
 
         [HttpPut("{id:int}")]
