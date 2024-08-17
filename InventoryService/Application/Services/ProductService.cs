@@ -1,11 +1,15 @@
+using InventoryService.Application.Validators.ProductValidator;
 using InventoryService.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 public class ProductService: IProductService{
     private readonly ApplicationDbContext _context;
-    public ProductService(ApplicationDbContext dbContext)
+    private readonly ProductValidator _productValidator;
+
+    public ProductService(ApplicationDbContext dbContext, ProductValidator validator)
     {
         _context = dbContext;
+        _productValidator = validator;
     }
 
     public async Task<IEnumerable<Product>> GetAllProductsAsync()
@@ -13,23 +17,50 @@ public class ProductService: IProductService{
         return await _context.Products.ToListAsync();
     }
 
-    public Task<Product> CreateProductAsync(Product product)
+    public async Task<Product> CreateProductAsync(Product product)
     {
-        throw new NotImplementedException();
+        var validationResult = _productValidator.Validate(product);
+        if(!validationResult.IsValid){
+            var errorMessage = string.Join(", ", validationResult.Errors);
+            throw new ArgumentException($"Invalid product data: {errorMessage}");
+        }
+        _context.Products.Add(product);
+        await _context.SaveChangesAsync();
+        return product;
     }
 
-    public Task<bool> DeleteProductAsync(int productId)
+    public async Task<Product> UpdateProductAsync(Product product)
     {
-        throw new NotImplementedException();
+        var validationResult = _productValidator.Validate(product);
+        if(!validationResult.IsValid){
+            var errorMessage = string.Join(", ", validationResult.Errors);
+            throw new ArgumentException($"Invalid product data: {errorMessage}");
+        }
+
+        Product existingProduct = await GetProductByIdAsync(product.ProductID);
+
+        _context.Entry(existingProduct).CurrentValues.SetValues(product);
+        await _context.SaveChangesAsync();
+        return product;
     }
 
-    public Product GetProductById(int productId)
+    public async Task<bool> DeleteProductAsync(int productId)
     {
-        return _context.Products.FirstOrDefault(x => x.ProductID == productId);
+        Product product = await GetProductByIdAsync(productId);
+        if(product == null)
+            return false;
+        _context.Products.Remove(product);
+        await _context.SaveChangesAsync();
+        return true;
     }
 
-    public Task<Product> UpdateProductAsync(int productId, Product product)
+    public async Task<Product> GetProductByIdAsync(int productId)
     {
-        throw new NotImplementedException();
+        return await _context.Products.FirstOrDefaultAsync(x => x.ProductID == productId);
+    }
+
+    public async Task<List<Product>> GetProductByNameAsync(string productName)
+    {
+        return await _context.Products.Where(x=> x.ProductName == productName).ToListAsync();
     }
 }

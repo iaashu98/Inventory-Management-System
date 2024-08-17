@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using InventoryService.Domain.Interfaces;
+using InventoryService.Application.Validators.ProductValidator;
 
 var builder = WebApplication.CreateBuilder(args);
 //Connection string
@@ -14,7 +15,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
         .AddEntityFrameworkStores<ApplicationDbContext>();
 
 //Regsiter Services
-
+builder.Services.AddScoped<ProductValidator>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ISupplierService, SupplierService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
