@@ -1,4 +1,4 @@
-namespace InventoryService.Domain.Interfaces
+namespace InventoryService.Core.Interfaces
 {
     public interface ISupplierService{
         Task<IEnumerable<Supplier>> GetAllSupplierAsync();

@@ -1,4 +1,4 @@
-namespace InventoryService.Domain.Interfaces
+namespace InventoryService.Core.Interfaces
 {
     public interface ICategoryService{
     Task<IEnumerable<Category>> GetAllCategoriesAsync();

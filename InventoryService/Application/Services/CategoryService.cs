@@ -1,5 +1,5 @@
 
-using InventoryService.Domain.Interfaces;
+using InventoryService.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 public class CategoryService : ICategoryService

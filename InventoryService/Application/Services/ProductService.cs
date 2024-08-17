@@ -1,5 +1,5 @@
 using InventoryService.Application.Validators.ProductValidator;
-using InventoryService.Domain.Interfaces;
+using InventoryService.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 public class ProductService: IProductService{
@@ -19,7 +19,7 @@ public class ProductService: IProductService{
 
     public async Task<Product> CreateProductAsync(Product product)
     {
-        var validationResult = _productValidator.Validate(product);
+        var validationResult = _productValidator.ValidateProduct(product);
         if(!validationResult.IsValid){
             var errorMessage = string.Join(", ", validationResult.Errors);
             throw new ArgumentException($"Invalid product data: {errorMessage}");
@@ -31,7 +31,7 @@ public class ProductService: IProductService{
 
     public async Task<Product> UpdateProductAsync(Product product)
     {
-        var validationResult = _productValidator.Validate(product);
+        var validationResult = _productValidator.ValidateProduct(product);
         if(!validationResult.IsValid){
             var errorMessage = string.Join(", ", validationResult.Errors);
             throw new ArgumentException($"Invalid product data: {errorMessage}");
@@ -61,6 +61,17 @@ public class ProductService: IProductService{
 
     public async Task<List<Product>> GetProductByNameAsync(string productName)
     {
+        if(string.IsNullOrWhiteSpace(productName))
+            return [];
+
         return await _context.Products.Where(x=> x.ProductName == productName).ToListAsync();
+    }
+
+    public async Task<IEnumerable<Product>> SearchProductsAsync(string searchText)
+    {
+        if(string.IsNullOrWhiteSpace(searchText))
+            return [];
+
+        return await _context.Products.Where(x => x.ProductName.Contains(searchText)).ToListAsync();
     }
 }

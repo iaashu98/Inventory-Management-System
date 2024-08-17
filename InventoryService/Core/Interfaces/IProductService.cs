@@ -1,4 +1,4 @@
-namespace InventoryService.Domain.Interfaces
+namespace InventoryService.Core.Interfaces
 {
     public interface IProductService{
     Task<IEnumerable<Product>> GetAllProductsAsync();
@@ -6,6 +6,7 @@ namespace InventoryService.Domain.Interfaces
     Task<Product> CreateProductAsync(Product product);
     Task<Product> UpdateProductAsync(Product product);
     Task<bool> DeleteProductAsync(int productId);
+    Task<IEnumerable<Product>> SearchProductsAsync(string searchText);
 
     //I'm using List here because I want to modify the return result. In case of IEnumerable, I can't do this because it is read-only
     Task<List<Product>> GetProductByNameAsync(string productName);

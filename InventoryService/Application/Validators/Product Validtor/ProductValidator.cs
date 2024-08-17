@@ -1,8 +1,8 @@
 namespace InventoryService.Application.Validators.ProductValidator{
     public class ProductValidator{
-        public ProductValidationResult Validate(Product product){
+        public ValidationResult ValidateProduct(Product product){
             
-            ProductValidationResult result = new ProductValidationResult { IsValid = true };
+            ValidationResult result = new ValidationResult { IsValid = true };
 
             if (product == null)
             {
@@ -16,53 +16,53 @@ namespace InventoryService.Application.Validators.ProductValidator{
                 result.IsValid = false;
                 result.Errors.Add("Product Id must be greater than 0.");
             }
-            
+
             if (string.IsNullOrWhiteSpace(product.ProductName))
             {
                 result.IsValid = false;
-                result.Errors.Add("ProductName is required.");
+                result.Errors.Add("Product Name is required.");
             }
 
             if (product.CategoryID <= 0)
             {
                 result.IsValid = false;
-                result.Errors.Add("CategoryID must be greater than 0.");
+                result.Errors.Add("Category Id must be greater than 0.");
             }
 
             if (product.SupplierID <= 0)
             {
                 result.IsValid = false;
-                result.Errors.Add("SupplierID must be greater than 0.");
+                result.Errors.Add("Supplier Id must be greater than 0.");
             }
 
             if (product.UnitPrice <= 0)
             {
                 result.IsValid = false;
-                result.Errors.Add("UnitPrice must be greater than 0.");
+                result.Errors.Add("Unit Price must be greater than 0.");
             }
 
             if (string.IsNullOrWhiteSpace(product.QuantityPerUnit))
             {
                 result.IsValid = false;
-                result.Errors.Add("QuantityPerUnit is required.");
+                result.Errors.Add("Quantity Per Unit is required.");
             }
 
             if (product.UnitsInStock < 0)
             {
                 result.IsValid = false;
-                result.Errors.Add("UnitsInStock must be greater than or equal to 0.");
+                result.Errors.Add("Units In Stock must be greater than or equal to 0.");
             }
 
             if (product.UnitsOnOrder < 0)
             {
                 result.IsValid = false;
-                result.Errors.Add("UnitsOnOrder must be greater than or equal to 0.");
+                result.Errors.Add("Units On Order must be greater than or equal to 0.");
             }
 
             if (product.ReorderLevel < 0)
             {
                 result.IsValid = false;
-                result.Errors.Add("ReorderLevel must be greater than or equal to 0.");
+                result.Errors.Add("Reorder Level must be greater than or equal to 0.");
             }
 
             return result;

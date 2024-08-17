@@ -1,4 +1,4 @@
-using InventoryService.Domain.Interfaces;
+using InventoryService.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -13,7 +13,7 @@ namespace InventoryService.API.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<Product>>> GetAllProducts()
         {
             IEnumerable<Product> products = await _productService.GetAllProductsAsync();
             return Ok(products);
@@ -24,7 +24,7 @@ namespace InventoryService.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<Product>> GetProductByIdAsync(int id)
+        public async Task<ActionResult<Product>> GetProductById(int id)
         {
             if (id <= 0)
                 return BadRequest("Invalid product ID");
@@ -47,7 +47,7 @@ namespace InventoryService.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Product>> AddProductAsync(Product product)
+        public async Task<ActionResult<Product>> AddProduct(Product product)
         {
             if(product == null)
                 return BadRequest("This is a Bad Request.");
@@ -56,7 +56,7 @@ namespace InventoryService.API.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult<bool>> DeleteProductAsync(int productId)
+        public async Task<ActionResult<bool>> DeleteProduct(int productId)
         {
             if(productId < 0)
                 return BadRequest("Invalid product ID");
@@ -66,7 +66,7 @@ namespace InventoryService.API.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<Product>> UpdateProductAsync(int id, Product product)
+        public async Task<ActionResult<Product>> UpdateProduct(int id, Product product)
         {
             if(id < 0)
                 return BadRequest("Invalid product ID");
@@ -74,6 +74,12 @@ namespace InventoryService.API.Controllers
             if (updatedProduct == null)
                 return NotFound($"The Product with Product ID {id} is Not Found.");
             return updatedProduct;
+        }
+
+        [HttpGet("[action]/{searchText:alpha}")]
+        public async Task<ActionResult<IEnumerable<Product>>> SearchProducts(string searchText){
+            IEnumerable<Product> products = await _productService.SearchProductsAsync(searchText);
+            return Ok(products);
         }
     }
 }

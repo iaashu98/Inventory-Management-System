@@ -1,35 +1,61 @@
-
-using InventoryService.Domain.Interfaces;
+using InventoryService.Application.Validators.ProductInventoryValidator;
+using InventoryService.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 public class ProductInventoryService: IProductInventoryService{
     private readonly ApplicationDbContext _context;
-    public ProductInventoryService(ApplicationDbContext dbContext)
+    private readonly ProductInventoryValidator _inventoryValidator;
+    public ProductInventoryService(ApplicationDbContext dbContext, ProductInventoryValidator validator)
     {
         _context = dbContext;
+        _inventoryValidator = validator;
     }
 
     public async Task<IEnumerable<ProductInventory>> GetAllProductInventoryAsync()
     {
         return await _context.ProductInventories.ToListAsync();
     }
-    public Task<ProductInventory> CreateProductInventoryAsync(ProductInventory productInventory)
+
+    public async Task<ProductInventory> CreateProductInventoryAsync(ProductInventory productInventory)
     {
-        throw new NotImplementedException();
+        var validationResult = _inventoryValidator.ValidateInventory(productInventory);
+        if(!validationResult.IsValid){
+            var errorMessage = string.Join(", ", validationResult.Errors);
+            throw new ArgumentException($"Invalid inventory data: {errorMessage}");
+        }
+
+        _context.ProductInventories.Add(productInventory);
+        await _context.SaveChangesAsync();
+        return productInventory;
     }
 
-    public Task<bool> DeleteProductInventoryAsync(int productInventoryId)
+    public async Task<int> DeleteProductInventoryAsync(int productInventoryId)
     {
-        throw new NotImplementedException();
+        ProductInventory inventory = await GetProductInventoryByIdAsync(productInventoryId);
+        if(inventory == null)
+            return 0;
+        _context.ProductInventories.Remove(inventory);
+        await _context.SaveChangesAsync();
+        return productInventoryId;
     }
 
-    public Task<ProductInventory> GetProductInventoryByIdAsync(int productInventoryId)
+    public async Task<ProductInventory> GetProductInventoryByIdAsync(int productInventoryId)
     {
-        throw new NotImplementedException();
+        ProductInventory inventory = await _context.ProductInventories.FirstOrDefaultAsync(x => x.InventoryID == productInventoryId);
+        return inventory;
     }
 
-    public Task<ProductInventory> UpdateProductInventoryAsync(int productInventoryId, ProductInventory productInventory)
+    public async Task<ProductInventory> UpdateProductInventoryAsync(int productInventoryId, ProductInventory productInventory)
     {
-        throw new NotImplementedException();
+        var validationResult = _inventoryValidator.ValidateInventory(productInventory);
+        if(!validationResult.IsValid){
+            var errorMessage = string.Join(", ", validationResult.Errors);
+            throw new ArgumentException($"Invalid inventory data: {errorMessage}");
+        }
+
+        ProductInventory existingInventory = await GetProductInventoryByIdAsync(productInventoryId);
+        _context.Entry(existingInventory).CurrentValues.SetValues(productInventory);
+        await _context.SaveChangesAsync();
+        return productInventory;
     }
 }

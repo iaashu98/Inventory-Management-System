@@ -1,4 +1,4 @@
-namespace InventoryService.Domain.Interfaces
+namespace InventoryService.Core.Interfaces
 {
     public interface IProductDetailService{
         Task<IEnumerable<ProductDetail>> GetAllProductDetailsAsync();
