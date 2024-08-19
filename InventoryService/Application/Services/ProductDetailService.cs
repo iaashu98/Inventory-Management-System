@@ -43,14 +43,14 @@ namespace InventoryService.Application.Services
 
         public async Task<ProductDetail> GetProductDetailByIdAsync(int productDetailId)
         {
-            return await _context.ProductDetails.FirstOrDefaultAsync( x => x.ProductDetailID == productDetailId );
+            return await _context.ProductDetails.FirstOrDefaultAsync(x => x.ProductDetailID == productDetailId);
         }
 
         public async Task<IEnumerable<ProductDetail>> SearchProductDetailsAsync(string searchText)
         {
-            return await _context.ProductDetails.Where( 
-                            x => x.Description.Contains(searchText) 
-                            || x.Manufacturer.Contains(searchText) 
+            return await _context.ProductDetails.Where(
+                            x => x.Description.Contains(searchText)
+                            || x.Manufacturer.Contains(searchText)
                             || x.Specifications.Contains(searchText)).ToListAsync();
         }
 

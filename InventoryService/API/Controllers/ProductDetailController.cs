@@ -1,3 +1,4 @@
+using AutoMapper;
 using InventoryService.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -5,8 +6,10 @@ namespace InventoryService.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProductDetailController(IProductDetailService productDetailService) : ControllerBase{
+    public class ProductDetailController(IProductDetailService productDetailService, IMapper mapper) : ControllerBase
+    {
         private readonly IProductDetailService _productDetailService = productDetailService;
+        private readonly IMapper _mapper = mapper;
 
         [HttpPost]
         public async Task<ProductDetail> AddProductDetail(ProductDetail productDetail)
@@ -31,7 +34,7 @@ namespace InventoryService.API.Controllers
         {
             return await _productDetailService.GetProductDetailByIdAsync(productDetailId);
         }
-        
+
         [HttpGet("[action]/{searchText:alpha}")]
         public async Task<IEnumerable<ProductDetail>> SearchProductDetails(string searchText)
         {

@@ -1,70 +1,74 @@
-
-using InventoryService.Application.Validators.CategoryValidator;
+using InventoryService.Application.Validators;
 using InventoryService.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-public class CategoryService : ICategoryService
+namespace InventoryService.Application.Services
 {
-    private readonly ApplicationDbContext _context;
-    private readonly CategoryValidator _validator;
-    public CategoryService(ApplicationDbContext dbContext, CategoryValidator categoryValidator)
+    public class CategoryService : ICategoryService
     {
-        _context = dbContext;   
-        _validator = categoryValidator;
-    }
-    
-    public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
-    {
-        return await _context.Categories.ToListAsync();
-    }
-
-    public async Task<Category> CreateCategoryAsync(Category category)
-    {
-        var validationResult = _validator.ValidateCategory(category);
-        if(!validationResult.IsValid){
-            var errorMessage = string.Join(", ", validationResult.Errors);
-            throw new ArgumentException($"Invalid category data: {errorMessage}");
+        private readonly ApplicationDbContext _context;
+        private readonly CategoryValidator _validator;
+        public CategoryService(ApplicationDbContext dbContext, CategoryValidator categoryValidator)
+        {
+            _context = dbContext;
+            _validator = categoryValidator;
         }
 
-        _context.Categories.Add(category);
-        await _context.SaveChangesAsync();
-        return category;
-    }
-
-    public async Task<int> DeleteCategoryAsync(int categoryId)
-    {
-        Category category = await GetCategoryByIdAsync(categoryId);
-
-        _context.Categories.Remove(category);
-        await _context.SaveChangesAsync();
-        return categoryId;
-    }
-
-    public async Task<Category> UpdateCategoryAsync(int categoryId, Category category)
-    {
-        var validationResult = _validator.ValidateCategory(category);
-        if(!validationResult.IsValid){
-            var errorMessage = string.Join(", ", validationResult.Errors);
-            throw new ArgumentException($"Invalid category data: {errorMessage}");
+        public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
+        {
+            return await _context.Categories.ToListAsync();
         }
 
-        Category existingCategory = await GetCategoryByIdAsync(categoryId);
-        _context.Entry(existingCategory).CurrentValues.SetValues(category);
-        await _context.SaveChangesAsync();
-        return category;
-    }
+        public async Task<Category> CreateCategoryAsync(Category category)
+        {
+            var validationResult = _validator.ValidateCategory(category);
+            if (!validationResult.IsValid)
+            {
+                var errorMessage = string.Join(", ", validationResult.Errors);
+                throw new ArgumentException($"Invalid category data: {errorMessage}");
+            }
 
-    public async Task<Category> GetCategoryByIdAsync(int categoryId)
-    {
-        return await _context.Categories.FirstOrDefaultAsync(x => x.CategoryID == categoryId);
-    }
+            _context.Categories.Add(category);
+            await _context.SaveChangesAsync();
+            return category;
+        }
 
-    public async Task<IEnumerable<Category>> SearchCategoriesAsync(string searchText)
-    {
-        if(string.IsNullOrWhiteSpace(searchText))
-            return [];
+        public async Task<int> DeleteCategoryAsync(int categoryId)
+        {
+            Category category = await GetCategoryByIdAsync(categoryId);
 
-        return await _context.Categories.Where(x => x.CategoryName.Contains(searchText) || 
-                     x.Description.Contains(searchText)).ToListAsync();
+            _context.Categories.Remove(category);
+            await _context.SaveChangesAsync();
+            return categoryId;
+        }
+
+        public async Task<Category> UpdateCategoryAsync(int categoryId, Category category)
+        {
+            var validationResult = _validator.ValidateCategory(category);
+            if (!validationResult.IsValid)
+            {
+                var errorMessage = string.Join(", ", validationResult.Errors);
+                throw new ArgumentException($"Invalid category data: {errorMessage}");
+            }
+
+            Category existingCategory = await GetCategoryByIdAsync(categoryId);
+            _context.Entry(existingCategory).CurrentValues.SetValues(category);
+            await _context.SaveChangesAsync();
+            return category;
+        }
+
+        public async Task<Category> GetCategoryByIdAsync(int categoryId)
+        {
+            return await _context.Categories.FirstOrDefaultAsync(x => x.CategoryID == categoryId);
+        }
+
+        public async Task<IEnumerable<Category>> SearchCategoriesAsync(string searchText)
+        {
+            if (string.IsNullOrWhiteSpace(searchText))
+                return [];
+
+            return await _context.Categories.Where(x => x.CategoryName.Contains(searchText) ||
+                         x.Description.Contains(searchText)).ToListAsync();
+        }
     }
 }

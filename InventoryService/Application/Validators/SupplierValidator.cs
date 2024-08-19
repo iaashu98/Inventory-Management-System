@@ -1,7 +1,9 @@
 namespace InventoryService.Application.Validators
 {
-    public class SupplierValidator{
-        public ValidationResult ValidateSupplier(Supplier supplier){
+    public class SupplierValidator
+    {
+        public ValidationResult ValidateSupplier(Supplier supplier)
+        {
             ValidationResult result = new ValidationResult { IsValid = true };
 
             if (supplier == null)
@@ -11,7 +13,7 @@ namespace InventoryService.Application.Validators
                 return result;
             }
 
-            if(supplier.SupplierID < 0)
+            if (supplier.SupplierID < 0)
             {
                 result.IsValid = false;
                 result.Errors.Add("Supplier Id must be greater than 0.");

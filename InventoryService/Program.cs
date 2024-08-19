@@ -1,13 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using InventoryService.Core.Interfaces;
-using InventoryService.Application.Validators.ProductValidator;
-using InventoryService.Application.Validators.ProductInventoryValidator;
-using InventoryService.Application.Validators.CategoryValidator;
-using InventoryService.Application.Validators;
-using InventoryService.Application.Services;
+using InventoryService.Application.Mappings;
+using InventoryService.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
 //Connection string
 string connString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -18,19 +15,18 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
         .AddEntityFrameworkStores<ApplicationDbContext>();
 
-//Regsiter Services
-builder.Services.AddScoped<ProductValidator>();
-builder.Services.AddScoped<CategoryValidator>();
-builder.Services.AddScoped<SupplierValidator>();
-builder.Services.AddScoped<ProductDetailValidator>();
-builder.Services.AddScoped<ProductInventoryValidator>();
+// Regsiter all validators - Added a custom extension method to register all the validators
+builder.Services.AddValidators();
 
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<ISupplierService, SupplierService>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<IProductDetailService, ProductDetailService>();
-builder.Services.AddScoped<IProductInventoryService, ProductInventoryService>();
+// Regsiter all services - Added a custom extension method to register all the services 
+builder.Services.AddApplicationServices();
 
+// Register all mapping profiles
+builder.Services.AddAutoMapper(typeof(ProductMappingProfile),
+                               typeof(CategoryMappingProfile),
+                               typeof(ProductDetailMappingProfile),
+                               typeof(ProductInventoryMappingProfile),
+                               typeof(SupplierMappingProfile));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

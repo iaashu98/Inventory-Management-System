@@ -1,7 +1,10 @@
-namespace InventoryService.Application.Validators.ProductValidator{
-    public class ProductValidator{
-        public ValidationResult ValidateProduct(Product product){
-            
+namespace InventoryService.Application.Validators
+{
+    public class ProductValidator
+    {
+        public ValidationResult ValidateProduct(Product product)
+        {
+
             ValidationResult result = new ValidationResult { IsValid = true };
 
             if (product == null)
@@ -11,7 +14,7 @@ namespace InventoryService.Application.Validators.ProductValidator{
                 return result;
             }
 
-            if(product.ProductID < 0)
+            if (product.ProductID < 0)
             {
                 result.IsValid = false;
                 result.Errors.Add("Product Id must be greater than 0.");
