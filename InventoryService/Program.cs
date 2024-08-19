@@ -4,6 +4,8 @@ using InventoryService.Core.Interfaces;
 using InventoryService.Application.Validators.ProductValidator;
 using InventoryService.Application.Validators.ProductInventoryValidator;
 using InventoryService.Application.Validators.CategoryValidator;
+using InventoryService.Application.Validators;
+using InventoryService.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 //Connection string
@@ -19,11 +21,14 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 //Regsiter Services
 builder.Services.AddScoped<ProductValidator>();
 builder.Services.AddScoped<CategoryValidator>();
+builder.Services.AddScoped<SupplierValidator>();
+builder.Services.AddScoped<ProductDetailValidator>();
 builder.Services.AddScoped<ProductInventoryValidator>();
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ISupplierService, SupplierService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductDetailService, ProductDetailService>();
 builder.Services.AddScoped<IProductInventoryService, ProductInventoryService>();
 
 

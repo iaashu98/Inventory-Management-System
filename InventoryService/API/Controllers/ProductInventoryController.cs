@@ -26,7 +26,7 @@ namespace InventoryService.API.Controllers
             return inventory;
         }
 
-        [HttpPut("{Id:int}")]
+        [HttpPut]
         public async Task<ActionResult<ProductInventory>> UpdateProductInventory(ProductInventory productInventory, int Id){
             ProductInventory inventory = await _productInventoryService.UpdateProductInventoryAsync(Id, productInventory);
             return inventory;

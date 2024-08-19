@@ -63,7 +63,7 @@ namespace InventoryService.API.Controllers
             return await _productService.DeleteProductAsync(productId);
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut]
         public async Task<ActionResult<Product>> UpdateProduct(int id, Product product)
         {
             if(id < 0)

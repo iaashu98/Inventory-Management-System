@@ -5,6 +5,7 @@ namespace InventoryService.Core.Interfaces
         Task<ProductDetail> GetProductDetailByIdAsync(int productDetailId);
         Task<ProductDetail> CreateProductDetailAsync(ProductDetail productDetail);
         Task<ProductDetail> UpdateProductDetailAsync(int productDetailId, ProductDetail productDetail);
-        Task<bool> DeleteProductDetailAsync(int productDetailId);
+        Task<int> DeleteProductDetailAsync(int productDetailId);
+        Task<IEnumerable<ProductDetail>> SearchProductDetailsAsync(string searchText);
     }
 }
