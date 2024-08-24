@@ -1,3 +1,5 @@
+using AutoMapper;
+using InventoryService.Core.DTOs;
 using InventoryService.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,20 +8,21 @@ namespace InventoryService.API.Controllers.CategoryController
 
     [ApiController]
     [Route("api/[controller]")]
-    public class CategoryController(ICategoryService service) : ControllerBase
+    public class CategoryController(ICategoryService service, IMapper mapper) : ControllerBase
     {
         private readonly ICategoryService _categoryService = service;
+        private readonly IMapper _mapper = mapper;
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetAllCategories()
+        public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAllCategories()
         {
-
             IEnumerable<Category> categories = await _categoryService.GetAllCategoriesAsync();
-            return Ok(categories);
+            IEnumerable<CategoryDTO> categoryDTOs = _mapper.Map<IEnumerable<CategoryDTO>>(categories);
+            return categoryDTOs.ToList();
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Category>> GetCategoryById(int id)
+        public async Task<ActionResult<CategoryDTO>> GetCategoryById(int id)
         {
             if (id <= 0)
                 return BadRequest("Invalid Category Id.");
@@ -27,21 +30,26 @@ namespace InventoryService.API.Controllers.CategoryController
             Category category = await _categoryService.GetCategoryByIdAsync(id);
             if (category == null)
                 return NotFound($"The Category with Id {id} is Not Found.");
-            return category;
+            return _mapper.Map<CategoryDTO>(category);;
         }
 
         [HttpPost]
-        public async Task<ActionResult<Category>> AddCategory(Category category)
+        public async Task<ActionResult<CategoryDTO>> AddCategory(CategoryDTO categoryDTO)
         {
-            if (category == null)
+            if (categoryDTO == null)
                 return BadRequest("This is a Bad Request.");
-            return await _categoryService.CreateCategoryAsync(category);
+
+            Category category = _mapper.Map<Category>(categoryDTO);
+            Category createdCategory = await _categoryService.CreateCategoryAsync(category);
+            return _mapper.Map<CategoryDTO>(createdCategory);
         }
 
         [HttpPut]
-        public async Task<ActionResult<Category>> UpdateCategory(int id, Category category)
+        public async Task<ActionResult<CategoryDTO>> UpdateCategory(int id, CategoryDTO categoryDTO)
         {
-            return await _categoryService.UpdateCategoryAsync(id, category);
+            Category category = _mapper.Map<Category>(categoryDTO);
+            Category updatedCategory = await _categoryService.UpdateCategoryAsync(id, category);
+            return _mapper.Map<CategoryDTO>(updatedCategory);
         }
 
         [HttpDelete]
@@ -51,10 +59,11 @@ namespace InventoryService.API.Controllers.CategoryController
         }
 
         [HttpGet("[action]/{searchText:alpha}")]
-        public async Task<ActionResult<IEnumerable<Category>>> SearchCategories(string searchText)
+        public async Task<ActionResult<IEnumerable<CategoryDTO>>> SearchCategories(string searchText)
         {
             IEnumerable<Category> categories = await _categoryService.SearchCategoriesAsync(searchText);
-            return categories.ToList();
+            IEnumerable<CategoryDTO> categoryDTOs = _mapper.Map<IEnumerable<CategoryDTO>>(categories);
+            return categoryDTOs.ToList();
         }
     }
 }

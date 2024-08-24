@@ -1,6 +1,8 @@
 using AutoMapper;
+using InventoryService.Core.DTOs;
 using InventoryService.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 
 namespace InventoryService.API.Controllers
 {
@@ -12,9 +14,12 @@ namespace InventoryService.API.Controllers
         private readonly IMapper _mapper = mapper;
 
         [HttpPost]
-        public async Task<ProductDetail> AddProductDetail(ProductDetail productDetail)
+        public async Task<ProductDetailDTO> AddProductDetail(ProductDetailDTO productDetailDTO)
         {
-            return await _productDetailService.CreateProductDetailAsync(productDetail);
+            ProductDetail productDetail = _mapper.Map<ProductDetail>(productDetailDTO);
+            ProductDetail createdProductDetail = await _productDetailService.CreateProductDetailAsync(productDetail);
+            ProductDetailDTO createdProductDetailDTO = _mapper.Map<ProductDetailDTO>(createdProductDetail);
+            return createdProductDetailDTO;
         }
 
         [HttpDelete]
@@ -24,27 +29,32 @@ namespace InventoryService.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<ProductDetail>> GetAllProductDetails()
+        public async Task<IEnumerable<ProductDetailDTO>> GetAllProductDetails()
         {
-            return await _productDetailService.GetAllProductDetailsAsync();
+            IEnumerable<ProductDetail> productDetails = await _productDetailService.GetAllProductDetailsAsync();
+            return _mapper.Map<IEnumerable<ProductDetailDTO>>(productDetails).ToList();
         }
 
         [HttpGet("{productDetailId:int}")]
-        public async Task<ProductDetail> GetProductDetailById(int productDetailId)
+        public async Task<ProductDetailDTO> GetProductDetailById(int productDetailId)
         {
-            return await _productDetailService.GetProductDetailByIdAsync(productDetailId);
+            ProductDetail productDetail = await _productDetailService.GetProductDetailByIdAsync(productDetailId);
+            return _mapper.Map<ProductDetailDTO>(productDetail);
         }
 
         [HttpGet("[action]/{searchText:alpha}")]
-        public async Task<IEnumerable<ProductDetail>> SearchProductDetails(string searchText)
+        public async Task<IEnumerable<ProductDetailDTO>> SearchProductDetails(string searchText)
         {
-            return await _productDetailService.SearchProductDetailsAsync(searchText);
+            IEnumerable<ProductDetail> productDetails = await _productDetailService.SearchProductDetailsAsync(searchText);
+            return _mapper.Map<IEnumerable<ProductDetailDTO>>(productDetails);
         }
 
         [HttpPut]
-        public async Task<ProductDetail> UpdateProductDetail(int productDetailId, ProductDetail productDetail)
+        public async Task<ProductDetailDTO> UpdateProductDetail(int productDetailId, ProductDetailDTO productDetailDTO)
         {
-            return await _productDetailService.UpdateProductDetailAsync(productDetailId, productDetail);
+            ProductDetail productDetail = _mapper.Map<ProductDetail>(productDetailDTO);
+            ProductDetail updatedProductDetail = await _productDetailService.UpdateProductDetailAsync(productDetailId, productDetail);
+            return _mapper.Map<ProductDetailDTO>(updatedProductDetail);
         }
     }
 }

@@ -20,7 +20,7 @@ public class ApplicationDbContext : DbContext
         // Ensure the connection string is set
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer("Server=localhost,1433;Database=aspnet-WebApplica71d622;User Id=SA;Password=Password123$;Encrypt=False;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("Server=localhost,1433;Database=InventoryMS;User Id=SA;Password=Password123$;Encrypt=False;TrustServerCertificate=True;");
         }
 
         base.OnConfiguring(optionsBuilder);

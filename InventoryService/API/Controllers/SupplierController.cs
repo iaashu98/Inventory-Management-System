@@ -1,3 +1,5 @@
+using AutoMapper;
+using InventoryService.Core.DTOs;
 using InventoryService.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -5,33 +7,39 @@ namespace InventoryService.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class SupplierController(ISupplierService supplierService) : ControllerBase
+    public class SupplierController(ISupplierService supplierService, IMapper mapper) : ControllerBase
     {
         private readonly ISupplierService _supplierService = supplierService;
+        private readonly IMapper _mapper = mapper;
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Supplier>>> GetAllSuppliers()
+        public async Task<ActionResult<IEnumerable<SupplierDTO>>> GetAllSuppliers()
         {
             IEnumerable<Supplier> suppliers = await _supplierService.GetAllSupplierAsync();
-            return suppliers.ToList();
+            return _mapper.Map<IEnumerable<SupplierDTO>>(suppliers).ToList();
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Supplier>> GetSupplierById(int id)
-        {
-            return await _supplierService.GetSupplierByIdAsync(id);
+        public async Task<ActionResult<SupplierDTO>> GetSupplierById(int id)
+        { 
+            Supplier supplier = await _supplierService.GetSupplierByIdAsync(id);
+            return _mapper.Map<SupplierDTO>(supplier);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Supplier>> AddSupplier(Supplier supplier)
+        public async Task<ActionResult<SupplierDTO>> AddSupplier(SupplierDTO supplierDTO)
         {
-            return await _supplierService.CreateSupplierAsync(supplier);
+            Supplier supplier = _mapper.Map<Supplier>(supplierDTO);
+            Supplier createdSupplier = await _supplierService.CreateSupplierAsync(supplier);
+            return _mapper.Map<SupplierDTO>(createdSupplier);
         }
 
         [HttpPut]
-        public async Task<ActionResult<Supplier>> UpdateSupplier(int id, Supplier supplier)
+        public async Task<ActionResult<SupplierDTO>> UpdateSupplier(int id, SupplierDTO supplierDTO)
         {
-            return await _supplierService.UpdateSupplierAsync(id, supplier);
+            Supplier supplier = _mapper.Map<Supplier>(supplierDTO);
+            Supplier updatedSupplier = await _supplierService.UpdateSupplierAsync(id, supplier);
+            return _mapper.Map<SupplierDTO>(updatedSupplier);
         }
 
         [HttpDelete]
@@ -41,9 +49,10 @@ namespace InventoryService.API.Controllers
         }
 
         [HttpGet("[action]/{searchText:alpha}")]
-        public async Task<ActionResult<IEnumerable<Supplier>>> SearchSuppliers(string searchText)
+        public async Task<ActionResult<IEnumerable<SupplierDTO>>> SearchSuppliers(string searchText)
         {
-            return Ok(await _supplierService.SearchSuppliersAsync(searchText));
+            IEnumerable<Supplier> suppliers = await _supplierService.SearchSuppliersAsync(searchText);
+            return _mapper.Map<IEnumerable<SupplierDTO>>(suppliers).ToList();
         }
     }
 }
