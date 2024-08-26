@@ -1,5 +1,5 @@
 using AutoMapper;
-using InventoryService.Core.DTOs;
+using InventoryService.Core.DTOs.SupplierDTOs;
 using InventoryService.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,7 +7,7 @@ namespace InventoryService.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class SupplierController(ISupplierService supplierService, IMapper mapper) : ControllerBase
+    public class SuppliersController(ISupplierService supplierService, IMapper mapper) : ControllerBase
     {
         private readonly ISupplierService _supplierService = supplierService;
         private readonly IMapper _mapper = mapper;
@@ -27,14 +27,14 @@ namespace InventoryService.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<SupplierDTO>> AddSupplier(SupplierDTO supplierDTO)
+        public async Task<ActionResult<SupplierDTO>> AddSupplier(CreateSupplierDTO supplierDTO)
         {
             Supplier supplier = _mapper.Map<Supplier>(supplierDTO);
             Supplier createdSupplier = await _supplierService.CreateSupplierAsync(supplier);
             return _mapper.Map<SupplierDTO>(createdSupplier);
         }
 
-        [HttpPut]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult<SupplierDTO>> UpdateSupplier(int id, SupplierDTO supplierDTO)
         {
             Supplier supplier = _mapper.Map<Supplier>(supplierDTO);
@@ -42,14 +42,14 @@ namespace InventoryService.API.Controllers
             return _mapper.Map<SupplierDTO>(updatedSupplier);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult<int>> DeleteSupplierById(int id)
         {
             return Ok(await _supplierService.DeleteSupplierAsync(id));
         }
 
         [HttpGet("[action]/{searchText:alpha}")]
-        public async Task<ActionResult<IEnumerable<SupplierDTO>>> SearchSuppliers(string searchText)
+        public async Task<ActionResult<IEnumerable<SupplierDTO>>> Search(string searchText)
         {
             IEnumerable<Supplier> suppliers = await _supplierService.SearchSuppliersAsync(searchText);
             return _mapper.Map<IEnumerable<SupplierDTO>>(suppliers).ToList();

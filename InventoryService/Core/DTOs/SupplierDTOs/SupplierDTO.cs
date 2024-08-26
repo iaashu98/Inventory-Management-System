@@ -1,4 +1,4 @@
-namespace InventoryService.Core.DTOs
+namespace InventoryService.Core.DTOs.SupplierDTOs
 {
     /// <summary>
     /// Represents the Data Transfer Object (DTO) for the Supplier entity.

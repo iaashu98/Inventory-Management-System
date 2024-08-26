@@ -1,5 +1,5 @@
 using AutoMapper;
-using InventoryService.Core.DTOs;
+using InventoryService.Core.DTOs.ProductInventoryDTOs;
 using InventoryService.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,7 +7,7 @@ namespace InventoryService.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProductInventoryController(IProductInventoryService inventoryService, IMapper mapper) : ControllerBase
+    public class ProductinventoriesController(IProductInventoryService inventoryService, IMapper mapper) : ControllerBase
     {
         private readonly IProductInventoryService _productInventoryService = inventoryService;
         private readonly IMapper _mapper = mapper;
@@ -27,14 +27,14 @@ namespace InventoryService.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductInventoryDTO>> AddProductInventory(ProductInventoryDTO productInventoryDTO)
+        public async Task<ActionResult<ProductInventoryDTO>> AddProductInventory(CreateProductInventoryDTO productInventoryDTO)
         {
             ProductInventory productInventory = _mapper.Map<ProductInventory>(productInventoryDTO);
             ProductInventory createdInventory = await _productInventoryService.CreateProductInventoryAsync(productInventory);
             return _mapper.Map<ProductInventoryDTO>(createdInventory);
         }
 
-        [HttpPut]
+        [HttpPut("{Id}")]
         public async Task<ActionResult<ProductInventoryDTO>> UpdateProductInventory(ProductInventoryDTO productInventoryDTO, int Id)
         {
             ProductInventory productInventory = _mapper.Map<ProductInventory>(productInventoryDTO);
@@ -42,7 +42,7 @@ namespace InventoryService.API.Controllers
             return _mapper.Map<ProductInventoryDTO>(updatedInventory);
         }
 
-        [HttpDelete]
+        [HttpDelete("{Id}")]
         public async Task<ActionResult<int>> DeleteProductInventory(int Id)
         {
             int deletedId = await _productInventoryService.DeleteProductInventoryAsync(Id);

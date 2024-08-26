@@ -1,4 +1,4 @@
-namespace InventoryService.Core.DTOs
+namespace InventoryService.Core.DTOs.ProductInventoryDTOs
 {
     /// <summary>
     /// Represents the Data Transfer Object (DTO) for the ProductInventory entity.

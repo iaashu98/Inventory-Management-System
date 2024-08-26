@@ -2,6 +2,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using InventoryService.Application.Mappings;
 using InventoryService.Infrastructure.Extensions;
+using MediatR;
+using FluentValidation;
+using InventoryService.Application.Behaviors;
+using InventoryService.Core.DTOs.SupplierDTOs;
+using InventoryService.Application.Validators.DTOValidators.SupplierDtoValidator;
+using System.Reflection;
+using InventoryService.Application.Validators.DtoValidators.ProductDtoValidator;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,15 +35,29 @@ builder.Services.AddAutoMapper(typeof(ProductMappingProfile),
                                typeof(ProductInventoryMappingProfile),
                                typeof(SupplierMappingProfile));
 
+
+// Add MediatR and FluentValidation services
+builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+builder.Services.AddValidatorsFromAssemblyContaining<CreateSupplierDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<ProductDtoValidator>();
+
+// Register the ValidationBehavior
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Connect it to Frontend project
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigin",
-        builder => builder.WithOrigins("http://localhost:5000")
-                          .AllowAnyMethod()
-                          .AllowAnyHeader());
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy.WithOrigins("http://127.0.0.1:3000", "http://localhost:3000") 
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
 });
 
 var app = builder.Build();
@@ -54,6 +75,8 @@ else
     app.UseHsts();
 }
 
+app.UseCors("AllowFrontend");
+
 //app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -61,8 +84,6 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseCors("AllowSpecificOrigin");
 
 app.MapControllers();
 

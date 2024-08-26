@@ -1,5 +1,5 @@
 using AutoMapper;
-using InventoryService.Core.DTOs;
+using InventoryService.Core.DTOs.ProductDetailDTOs;
 using InventoryService.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
@@ -8,13 +8,13 @@ namespace InventoryService.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProductDetailController(IProductDetailService productDetailService, IMapper mapper) : ControllerBase
+    public class ProductdetailsController(IProductDetailService productDetailService, IMapper mapper) : ControllerBase
     {
         private readonly IProductDetailService _productDetailService = productDetailService;
         private readonly IMapper _mapper = mapper;
 
         [HttpPost]
-        public async Task<ProductDetailDTO> AddProductDetail(ProductDetailDTO productDetailDTO)
+        public async Task<ProductDetailDTO> AddProductDetail(CreateProductDetailDTO productDetailDTO)
         {
             ProductDetail productDetail = _mapper.Map<ProductDetail>(productDetailDTO);
             ProductDetail createdProductDetail = await _productDetailService.CreateProductDetailAsync(productDetail);
@@ -22,7 +22,7 @@ namespace InventoryService.API.Controllers
             return createdProductDetailDTO;
         }
 
-        [HttpDelete]
+        [HttpDelete("{productDetailId}")]
         public async Task<int> DeleteProductDetail(int productDetailId)
         {
             return await _productDetailService.DeleteProductDetailAsync(productDetailId);
@@ -43,13 +43,13 @@ namespace InventoryService.API.Controllers
         }
 
         [HttpGet("[action]/{searchText:alpha}")]
-        public async Task<IEnumerable<ProductDetailDTO>> SearchProductDetails(string searchText)
+        public async Task<IEnumerable<ProductDetailDTO>> Search(string searchText)
         {
             IEnumerable<ProductDetail> productDetails = await _productDetailService.SearchProductDetailsAsync(searchText);
             return _mapper.Map<IEnumerable<ProductDetailDTO>>(productDetails);
         }
 
-        [HttpPut]
+        [HttpPut("{productDetailId}")]
         public async Task<ProductDetailDTO> UpdateProductDetail(int productDetailId, ProductDetailDTO productDetailDTO)
         {
             ProductDetail productDetail = _mapper.Map<ProductDetail>(productDetailDTO);

@@ -1,5 +1,5 @@
 using AutoMapper;
-using InventoryService.Core.DTOs;
+using InventoryService.Core.DTOs.CategoryDTOs;
 
 namespace InventoryService.Application.Mappings
 {
@@ -9,6 +9,8 @@ namespace InventoryService.Application.Mappings
         {
             CreateMap<Category, CategoryDTO>();
             CreateMap<CategoryDTO, Category>();
+            CreateMap<Category, CreateCategoryDTO>();
+            CreateMap<CreateCategoryDTO, Category>();
         }
     }
 }

@@ -1,5 +1,5 @@
 using AutoMapper;
-using InventoryService.Core.DTOs;
+using InventoryService.Core.DTOs.ProductInventoryDTOs;
 
 namespace InventoryService.Application.Mappings
 {
@@ -8,6 +8,7 @@ namespace InventoryService.Application.Mappings
         public ProductInventoryMappingProfile()
         {
             CreateMap<ProductInventory, ProductInventoryDTO>().ReverseMap();
+            CreateMap<ProductInventory, CreateProductInventoryDTO>().ReverseMap();
         }
     }
 }

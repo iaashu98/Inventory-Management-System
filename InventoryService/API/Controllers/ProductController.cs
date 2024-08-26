@@ -1,6 +1,7 @@
 using AutoMapper;
-using InventoryService.Core.DTOs;
+using InventoryService.Core.DTOs.ProductDTOs;
 using InventoryService.Core.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -8,10 +9,11 @@ namespace InventoryService.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProductsController(IProductService productService, IMapper mapper) : ControllerBase
+    public class ProductsController(IProductService productService, IMapper mapper, IMediator mediator) : ControllerBase
     {
         private readonly IProductService _productService = productService;
         private readonly IMapper _mapper = mapper;
+        private readonly IMediator _mediator = mediator;
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -61,7 +63,7 @@ namespace InventoryService.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductDTO>> AddProduct(ProductDTO productDTO)
+        public async Task<ActionResult<ProductDTO>> AddProduct(CreateProductDTO productDTO)
         {
             if (productDTO == null)
                 return BadRequest("This is a Bad Request.");
@@ -71,16 +73,16 @@ namespace InventoryService.API.Controllers
             return createdProductDTO;
         }
 
-        [HttpDelete]
-        public async Task<ActionResult<bool>> DeleteProduct(int productId)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<bool>> DeleteProduct(int id)
         {
-            if (productId < 0)
+            if (id < 0)
                 return BadRequest("Invalid product ID");
 
-            return await _productService.DeleteProductAsync(productId);
+            return await _productService.DeleteProductAsync(id);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<ActionResult<ProductDTO>> UpdateProduct(int id, ProductDTO productDTO)
         {
             if (id != productDTO.ProductID || id < 0)
@@ -98,7 +100,7 @@ namespace InventoryService.API.Controllers
         }
 
         [HttpGet("[action]/{searchText:alpha}")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> SearchProducts(string searchText)
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> Search(string searchText)
         {
             IEnumerable<Product> products = await _productService.SearchProductsAsync(searchText);
             IEnumerable<ProductDTO> productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
