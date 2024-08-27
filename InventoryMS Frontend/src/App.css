@@ -1,0 +1,11 @@
+/* Optional additional styling */
+.collapsible-item {
+    border: 1px solid #e2e8f0; /* Add a border to each collapsible item */
+    border-radius: 0.375rem; /* Rounded corners */
+    padding: 0.5rem; /* Padding around each item */
+    background-color: #f8fafc; /* Light background */
+}
+
+.collapsible-content {
+    margin-top: 0.5rem; /* Space between the title and content */
+}

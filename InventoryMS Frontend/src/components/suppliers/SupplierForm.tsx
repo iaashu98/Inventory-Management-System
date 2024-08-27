@@ -3,7 +3,7 @@ import { createSupplier, updateSupplier, getSupplierById } from '../../services/
 import { ISupplierFormProps } from '../../interfaces/suppliers/ISupplierFormProps';
 import { ISupplier } from '../../interfaces/suppliers/ISupplier';
 
-const SupplierForm = ({ supplierId, onSuccess }: ISupplierFormProps) => {
+const SupplierForm = ({ supplierId, onSuccess, setShowForm, setShowAddBtn }: ISupplierFormProps) => {
     const [supplier, setSupplier] = useState<ISupplier>({
         supplierID: 0,
         supplierName: '',
@@ -21,30 +21,39 @@ const SupplierForm = ({ supplierId, onSuccess }: ISupplierFormProps) => {
             const fetchSupplier = async () =>{
                 try{
                     const response = await getSupplierById(supplierId)
-                        setSupplier(response.data);
+                    setSupplier(response.data);
             }
             catch{
                 console.error("Error fetching supplier: ", supplierId)
             }
-            fetchSupplier();
         }
+        fetchSupplier();
     }
     }, [supplierId]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setSupplier({ ...supplier, [name]: value });
-    };
+    }
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (supplierId) {
-            await updateSupplier(supplierId, supplier);
-        } else {
-            await createSupplier(supplier);
+        try {
+            if (supplierId) {
+                await updateSupplier(supplierId, supplier);
+            } else {
+                await createSupplier(supplier);
+            }
+            onSuccess();
+        } catch (error) {
+            console.error("Error saving supplier: ", error);
         }
-        onSuccess();
-    };
+    }
+
+    const handleCancel = () => {
+        setShowForm(false);
+        setShowAddBtn(true);
+    }
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -80,7 +89,20 @@ const SupplierForm = ({ supplierId, onSuccess }: ISupplierFormProps) => {
                 <label className="mb-1 font-semibold">Email</label>
                 <input type="email" name="email" value={supplier.email} onChange={handleChange} className="border p-2 rounded" />
             </div>
-            <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">{supplierId ? 'Update' : 'Create'}</button>
+            <div className="flex items-center space-x-2">
+                <button
+                    type='submit'
+                    className="bg-green-600 text-white py-2 px-4 mb-4 rounded hover:bg-green-700 w-24 h-10 flex items-center justify-center"
+                >
+                    {supplierId ? 'Update' : 'Create'}
+                </button>
+                <button
+                    onClick={() => handleCancel()}
+                    className="bg-red-500 text-white py-2 px-4 mb-4 rounded hover:bg-red-600 w-24 h-10 flex items-center justify-center"
+                >
+                    Cancel
+                </button>
+            </div>
         </form>
 
     );

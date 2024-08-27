@@ -3,7 +3,8 @@ import { IProductFormProps } from '../../interfaces/products/IProductFormProps'
 import { IProduct } from '../../interfaces/products/IProduct'
 import { createProduct, getProductById, updateProduct } from '../../services/api';
 
-const ProductForm = ({ productId, onSuccess }: IProductFormProps) => {
+const ProductForm = ({ productId, onSuccess, setShowForm, setShowAddBtn }: IProductFormProps) => {
+
     const [product, setProduct] = useState<IProduct>(
         {
             productID: 0,
@@ -53,6 +54,10 @@ const ProductForm = ({ productId, onSuccess }: IProductFormProps) => {
             console.error("Error saving product: ", error);
         }
     }
+    const handleCancel= () => {
+        setShowForm(false);
+        setShowAddBtn(true);
+    }
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -95,7 +100,20 @@ const ProductForm = ({ productId, onSuccess }: IProductFormProps) => {
                     <option value="true">Yes</option>
                 </select>
             </div>
-            <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">{productId ? 'Update' : 'Create'}</button>
+            <div className="flex items-center space-x-2">
+                <button
+                    type='submit'
+                    className="bg-green-600 text-white py-2 px-4 mb-4 rounded hover:bg-green-700 w-24 h-10 flex items-center justify-center"
+                >
+                    {productId ? 'Update' : 'Create'}
+                </button>
+                <button
+                    onClick={() => handleCancel()}
+                    className="bg-red-500 text-white py-2 px-4 mb-4 rounded hover:bg-red-600 w-24 h-10 flex items-center justify-center"
+                >
+                    Cancel
+                </button>
+            </div>
         </form>
     )
 }
