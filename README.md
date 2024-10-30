@@ -1,4 +1,5 @@
 # Inventory Management System
+The Inventory Management System is a comprehensive solution for managing categories, products, product details, product inventory, and suppliers. It is built using a clean architecture approach, with a separation of concerns between the API, application logic, and infrastructure. The system allows users to perform CRUD (Create, Read, Update, Delete) operations on the five entities: Category, Product, ProductDetail, ProductInventory, and Supplier.
 
 ## Table of Contents
 
