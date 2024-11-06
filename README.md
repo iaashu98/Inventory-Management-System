@@ -18,7 +18,6 @@
 - [AutoMapper Setup](#automapper-setup)
 - [Behaviors](#behaviors)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Overview
 
@@ -45,7 +44,6 @@ The project follows a layered architecture, adhering to the principles of clean 
 - **Backend**:
   - ASP.NET Core
   - Entity Framework Core
-  - MediatR
   - AutoMapper
   - FluentValidation
   - SQL Server
@@ -59,6 +57,7 @@ The project follows a layered architecture, adhering to the principles of clean 
 
 ## Folder Structure
 
+```bash
 InventoryService/
 ├── Api/                 # API layer containing controllers
 ├── Application/         # Application layer containing business logic
@@ -70,7 +69,9 @@ InventoryService/
 ├── Infrastructure/      # Infrastructure layer containing database access
 ├── Migrations/          # EF Core migrations
 └── Properties/          # Application properties and settings
+```
 
+```bash
 inventory-frontend/
 ├── public/              # Static assets
 ├── src/                 # Source files
@@ -82,7 +83,7 @@ inventory-frontend/
 │   ├── main.tsx         # Entry point
 │   └── index.css        # Global CSS
 └── vite.config.ts       # Vite configuration
-
+```
 
 ## Getting Started
 
@@ -101,7 +102,7 @@ Before you begin, ensure you have the following installed on your machine:
 1. **Clone the repository**:
 
 ```bash
-   git clone https://github.com/yourusername/inventory-management-system.git
+   git clone https://github.com/iaashu98/inventory-management-system.git
    cd inventory-management-system/InventoryService
 ```
 
@@ -226,11 +227,11 @@ To add a new mapping, create a profile in the Mappings folder:
 
 ```csharp
 
-public class YourEntityProfile : Profile
+public class NewEntityProfile : Profile
 {
-    public YourEntityProfile()
+    public NewEntityProfile()
     {
-        CreateMap<YourEntity, YourEntityDto>().ReverseMap();
+        CreateMap<NewEntity, NewEntityDTO>().ReverseMap();
     }
 }
 ```
@@ -240,7 +241,7 @@ public class YourEntityProfile : Profile
 MediatR pipeline behaviors are used for cross-cutting concerns like validation, logging, and performance monitoring. These behaviors are located in the Application/Behaviors folder.
 
 ### ValidationBehavior
-Ensures that all incoming requests are validated according to the rules defined using FluentValidation.
+It ensures that all incoming requests are validated according to the rules defined using FluentValidation.
 
 ### LoggingBehavior
 Logs details about the requests and responses, which is helpful for debugging and monitoring.
@@ -252,6 +253,3 @@ Monitors the time taken to execute a request, logging warnings for slow operatio
 
 Contributions are welcome! Please fork this repository, create a new branch, and submit a pull request. Ensure that your code adheres to the existing code style and includes appropriate tests.
 
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for more details.
